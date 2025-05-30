@@ -43,3 +43,4 @@ db.Sequelize = Sequelize;
 module.exports = db;
 
 console.log("Database models loaded successfully");
+console.log("hola")
