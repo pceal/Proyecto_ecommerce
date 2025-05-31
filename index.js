@@ -3,6 +3,18 @@ const app = express()
 const PORT = 3000
 
 
+//MIDDLEWARE
+app.use(express.json())
+
+//RUTAS
+app.use("/users", require("./routes/users"))
+app.use("/orders", require("./routes/orders"))
+
+// Middleware de errores (después de TODAS las rutas)
+
+
+
+
 
 
 
