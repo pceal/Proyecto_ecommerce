@@ -16,18 +16,18 @@ const OrderController =  {
         try {
             const orders = await Order.findAll({
                 // include: [User]
-                include: [{ model: User, attributes: ["name", "email"] }]
+                include: [{ model: Products, attributes: ["name"] }]
             })
             res.status(200).send(orders)
         } catch (error) {
             console.log(error)
             res.status(500).send({ message: 'Ha habido un problema al cargar los pedidos' })
         }
-    },
+    }, //mirar desde aqui 
      /*async getById(req, res) {
         try {
             const order = await Order.findByPk(req.params.id, {
-                include: [User]
+                include: [Product]
             })
             res.status(200).send(post)
         } catch (error) {

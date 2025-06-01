@@ -9,6 +9,11 @@ app.use(express.json())
 //RUTAS
 app.use("/users", require("./routes/users"))
 app.use("/orders", require("./routes/orders"))
+app.use('/products', require('./routes/products'))
+
+
+
+
 
 // Middleware de errores (después de TODAS las rutas)
 
