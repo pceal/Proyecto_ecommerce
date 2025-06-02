@@ -5,6 +5,7 @@ const UserController = {
         try{
             // AÑADIR A) const password = await bcrypt.hash(req.body.password, 10)
             //AÑADIR A) const user = await User.create({ ...req.body, password: password, confirmed: false, role: "user" })
+            consol.log("hola mundo") // BORRAR A)
             req.body.role = "user" // BORRAR A)
             const user = await User.create(req.body)
             res.status(201).send({ msg: 'Usuario creado con éxito', user })
