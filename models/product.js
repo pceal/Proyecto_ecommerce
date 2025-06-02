@@ -15,7 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "ProductId", // FK que apunta desde GenreBook hacia Book
         as: "Orders", // Debe coincidir con el alias en el include
       });
-     
+     product.belongsToMany(models.Category, {
+        through: models.ProductCategory, // Usa el modelo, no el nombre como string
+        foreignKey: "ProductId", // FK que apunta desde GenreBook hacia Book
+        as: "Categories", // Debe coincidir con el alias en el include
+      });
       // define association here
     }
   }

@@ -90,6 +90,57 @@ async getAll(req, res) {
         }
     },
 };
+/* const genres = await Genre.findAll({
+          where: { id: req.body.GenreIds },
+        });
+
+        if (genres.length !== req.body.GenreIds.length) {
+          return res.status(404).send({ message: "Some genres not found" });
+        }
+
+        await book.addGenres(req.body.GenreIds); // Método mágico de Sequelize
+      }
+
+      // Respuesta con el libro y sus géneros
+      const bookWithGenres = await Book.findByPk(book.id, {
+        include: [
+          {
+            model: Genre,
+            as: "Genres",
+            through: { attributes: [] }, // Oculta la tabla intermedia
+          },
+        ],
+      });
+
+      res.status(201).send(bookWithGenres);
+    } catch (error) {
+      console.error("Error detallado:", error);
+      res.status(500).send({
+        message: "Error creating book",
+        error: error.message,
+      });
+    }
+  },
+
+  // Obtener todos los libros con sus géneros
+  async getAll(req, res) {
+    try {
+      const books = await Book.findAll({
+        include: [
+          {
+            model: Genre,
+            as: "Genres",
+            through: { attributes: [] }, // Oculta la tabla intermedia
+          },
+        ],
+      });
+      res.send(books);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Error al obtener libros", error });
+    }
+  },
+};*/
 
 
 
