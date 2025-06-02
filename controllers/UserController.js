@@ -1,4 +1,4 @@
-const { User,Order } = require('../models/index.js');
+const { User,Order,Product } = require('../models/index.js');
 //AÑADIR A) const bcrypt = require("bcryptjs")
 const UserController = {
     async create(req, res) {
@@ -7,7 +7,10 @@ const UserController = {
             //AÑADIR A) const user = await User.create({ ...req.body, password: password, confirmed: false, role: "user" })
             req.body.role = "user" // BORRAR A)
             const user = await User.create(req.body)
-            res.status(201).send({ msg: 'Usuario creado con éxito', user })
+            //prueba
+           
+            //modificar prueba
+            res.status(201).send({ msg: 'Usuario creado con éxito', User })
         } catch(error){
             res.status(500).send(error)
         }
@@ -33,7 +36,8 @@ const UserController = {
     async getAll(req, res) {
         try {
             const users = await User.findAll({
-                //include: [Post]
+                
+                include: [Order]
             })
             res.status(200).send({ msg: 'Todos los usuarios', users })
         } catch (error) {

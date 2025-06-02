@@ -1,14 +1,26 @@
-const { Order, User, } = require("../models/index.js"); // en algun momento hay que añadir { Order, User, sequeleze} 
-//const { Op } = Sequelize
-//const order = require("../models/order.js");
+const { Order, User, Product } = require("../models/index.js"); // en algun momento hay que añadir { Order, User, sequeleze} 
+
+
+
 
 
 const OrderController =  {
     async create(req, res) {
         try {
             const order = await Order.create(req.body)
-            res.status(201).send({ msg: "Order creado con éxito", order })
+             await order.addProducts(req.body.ProductIds)
+             const OrderWithProducts = await Order.findByPk(order.id, {
+                include: [
+                    {
+                        model: Product,
+                        as: "Products",
+                        through: { attributes: [] }, // Oculta la tabla intermedia
+                    },
+                ],
+            });
+            res.status(201).send({ msg: "Order creado con éxito", OrderWithProducts })
         } catch (error) {
+            console.error(error);
             res.status(500).send(error)
         }
     },
@@ -16,7 +28,7 @@ const OrderController =  {
         try {
             const orders = await Order.findAll({
                 // include: [User]
-                include: [{ model: Products, attributes: ["name"] }]
+                include: [{ model: Product, attributes: ["name"] }]
             })
             res.status(200).send(orders)
         } catch (error) {

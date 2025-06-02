@@ -21,7 +21,7 @@ const ProductController = {
             // });
             //añadir para hacer la relacion
             // if (categoty.length !== req.body.CategoryIds.length) {
-            await product.addCategories(req.body.CategoryIds);
+            await product.addCategories(req.body.CategoryIds)
             // añadir para relaciones Respuesta con el producto y sus categorias
             const productWithCategories = await Product.findByPk(product.id, {
                 include: [
@@ -41,7 +41,7 @@ const ProductController = {
         }
     },
     async getAll(req, res) {
-        try {
+        try {;
             const products = await Product.findAll({
                 //include: [Post]
             })

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
         
-      Order.belongsTo(models.User);
+      Order.belongsTo(models.User)
       Order.belongsToMany(models.Product, {
         through: models.OrderProduct, // Usa el modelo, no el nombre como string
         foreignKey: "OrderId", // FK que apunta desde GenreBook hacia Book

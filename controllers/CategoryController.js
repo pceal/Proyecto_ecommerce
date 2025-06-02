@@ -8,11 +8,24 @@ const CategoryController =  {
     async create(req, res) {
         try {
             const category = await Category.create(req.body)
-            res.status(201).send({ msg: " La Categoria ha sigo creada con éxito", category })
+            //añadido
+             await category.addProducts(req.body.ProductIds)
+             // If you want to fetch the category with its products after creation, use the following:
+              const productWithCategories = await Category.findByPk(category.id, {
+                  include: [
+                    {
+                        model: Product,
+                        as: "Products",
+                        through: { attributes: [] },
+                    },
+                ],
+             });
+            res.status(201).send({ msg: "La Categoria ha sido creada con éxito", productWithCategories });
         } catch (error) {
             res.status(500).send(error)
         }
     },
+
     async getAll(req, res) {
         try {
             const categories = await Category.findAll({
