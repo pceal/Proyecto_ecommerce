@@ -1,5 +1,5 @@
 const { INSERT } = require("sequelize/lib/query-types");
-const { Product, Order, Sequelize } = require("../models/index.js");
+const { Product, Category, Order, Sequelize } = require("../models/index.js");
 const order = require("../models/order.js");
 const product = require("../models/product.js");
 const { Op } = Sequelize
@@ -8,20 +8,39 @@ const { Op } = Sequelize
 
 
 const ProductController = {
-  // Crear un género
-  async insert(req, res) {
-    try {
-      const product = await Product.create({
-        name: req.body.name,
-        price: req.body.price, 
-      });
-      res.status(201).send({ message: "producto creado con éxito", product });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({ message: "Error al crear el producto", error });
-    }
-  },
-async getAll(req, res) {
+    // Crear un género
+    async insert(req, res) {
+        try {
+            const product = await Product.create({
+                name: req.body.name,
+                price: req.body.price,
+            });
+            //añadir para relaciones (busca id de categorias)
+            // const categories = await Category.findAll({
+            //     where: { id: req.body.CategoryIds },
+            // });
+            //añadir para hacer la relacion
+            // if (categoty.length !== req.body.CategoryIds.length) {
+            await product.addCategories(req.body.CategoryIds);
+            // añadir para relaciones Respuesta con el producto y sus categorias
+            const productWithCategories = await Product.findByPk(product.id, {
+                include: [
+                    {
+                        model: Category,
+                        as: "Categories",
+                        through: { attributes: [] }, // Oculta la tabla intermedia
+                    },
+                ],
+            });
+            // añadir para relaciones
+            // Respuesta con el producto y sus categorías
+            res.status(201).send({ message: "producto creado con éxito", productWithCategories });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ message: "Error al crear el producto", error });
+        }
+    },
+    async getAll(req, res) {
         try {
             const products = await Product.findAll({
                 //include: [Post]
@@ -32,7 +51,7 @@ async getAll(req, res) {
         }
     },
 
-     async update(req, res) {
+    async update(req, res) {
         await Product.update(req.body,
             {
                 where: {
@@ -40,7 +59,7 @@ async getAll(req, res) {
                 }
             })
         res.send('Usuario actualizado con éxito');
-    }, 
+    },
     async delete(req, res) {
         await Product.destroy({
             where: {
@@ -51,7 +70,7 @@ async getAll(req, res) {
             'el producto ha sido eliminada con éxito'
         )
     },
-     async getById(req, res) {
+    async getById(req, res) {
         try {
             const product = await Product.findByPk(req.params.id)
             res.status(200).send(product)
@@ -59,7 +78,7 @@ async getAll(req, res) {
             res.status(500).send({ message: 'Ha habido un problema al cargar el producto' })
         }
     },
-     async getOneByName(req, res) {
+    async getOneByName(req, res) {
         try {
             const product = await Product.findOne({
                 where: {
@@ -73,7 +92,7 @@ async getAll(req, res) {
         } catch (error) {
             res.status(500).send({ message: 'Ha habido un problema al cargar el producto' })
         }
-    }, 
+    },
     // ... (otros métodos como insert, getById, etc.) ...
 
     // Nueva función asíncrona para obtener todos los productos ordenados por precio (mayor a menor)
@@ -86,7 +105,7 @@ async getAll(req, res) {
             });
             res.status(200).send(products);
         } catch (error) {
-           res.status(500).send({ message: "Ha habido un problema al obtener los productos ordenados por precio", error: error.message });
+            res.status(500).send({ message: "Ha habido un problema al obtener los productos ordenados por precio", error: error.message });
         }
     },
 };
@@ -145,4 +164,4 @@ async getAll(req, res) {
 
 
 
- module.exports = ProductController;
+module.exports = ProductController;
