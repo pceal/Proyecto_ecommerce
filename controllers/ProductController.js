@@ -1,16 +1,17 @@
-const { INSERT } = require("sequelize/lib/query-types");
+//const { INSERT } = require("sequelize/lib/query-types");
 const { Product, Category, Order, Sequelize } = require("../models/index.js");
-const order = require("../models/order.js");
-const product = require("../models/product.js");
+//const order = require("../models/order.js");
+//const product = require("../models/product.js");
 const { Op } = Sequelize
 
 
 
 
 const ProductController = {
-    // Crear un género
-    async insert(req, res) {
+    
+    async insert(req, res, next) {
         try {
+            //req.body.UserId = req.user.id // Añadir el UserId del usuario autenticado
             const product = await Product.create({
                 name: req.body.name,
                 price: req.body.price,
@@ -37,7 +38,8 @@ const ProductController = {
             res.status(201).send({ message: "producto creado con éxito", productWithCategories });
         } catch (error) {
             console.error(error);
-            res.status(500).send({ message: "Error al crear el producto", error });
+            //res.status(500).send({ message: "Error al crear el producto", error });
+            next(error); // Pasar el error al middleware de manejo de errores
         }
     },
     async getAll(req, res) {

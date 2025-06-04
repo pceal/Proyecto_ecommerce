@@ -1,4 +1,6 @@
 const express = require("express")
+const { typeError } = require("./middleware/errors")
+
 const app = express()
 const PORT = 3000
 
@@ -16,7 +18,9 @@ app.use('/categories', require('./routes/categories'))
 
 
 
+
 // Middleware de errores (después de TODAS las rutas)
+app.use(typeError);
 
 
 
