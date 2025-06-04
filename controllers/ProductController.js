@@ -45,7 +45,14 @@ const ProductController = {
     async getAll(req, res) {
         try {;
             const products = await Product.findAll({
-                //include: [Post]
+                include: [
+          {
+            model: Order,
+            as: "Orders",
+            through: { attributes: [] }, // Oculta la tabla intermedia
+          },
+        ],
+                  
             })
             res.status(200).send({ msg: 'Todos los productos', products })
         } catch (error) {
@@ -101,8 +108,8 @@ const ProductController = {
     async getAllOrderedByPriceAsc(req, res) {
         try {
             const products = await Product.findAll({
-                product: [
-                    ['price', 'ASC'] // Ordenar por la columna 'price' en orden descendente
+                order: [
+                    ['price', 'ASC'] // Ordenar por la columna 'price' en orden ascendente
                 ]
             });
             res.status(200).send(products);

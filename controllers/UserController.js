@@ -47,7 +47,21 @@ const UserController = {
             //req.body.ProductId = req.product.name
             const users = await User.findAll({
                 
-                include: [Order]
+                include: [Order],
+               /* include: [
+    {
+        model: Order,
+        as: "Orders", // Asegúrate de que este alias coincide con tu definición en models/product.js
+        through: { attributes: [] }, // Oculta los atributos de la tabla intermedia OrderProduct
+    }, ]*/
+
+    /*{
+        model: Product,
+        as: "Products", // Asegúrate de que este alias coincide con tu definición en models/product.js
+        through: { attributes: [] }, // Oculta los atributos de la tabla intermedia ProductCategory
+    }
+]*/
+                
             })
             res.status(200).send({ msg: 'Todos los usuarios', users })
         } catch (error) {
