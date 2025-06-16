@@ -1,16 +1,13 @@
    const { Category,Product,Sequelize } = require("../models/index.js"); 
-   const { Op } = Sequelize// en algun momento hay que añadir { Order, User, sequeleze} 
-//const { Op } = Sequelize
-//const order = require("../models/order.js");
-
+   const { Op } = Sequelize
 
 const CategoryController =  {
     async create(req, res) {
         try {
             const category = await Category.create(req.body)
-            //añadido
+          
              await category.addProducts(req.body.ProductIds)
-             // If you want to fetch the category with its products after creation, use the following:
+             
               const productWithCategories = await Category.findByPk(category.id, {
                   include: [
                     {
@@ -29,8 +26,15 @@ const CategoryController =  {
     async getAll(req, res) {
         try {
             const categories = await Category.findAll({
-                // include: [User]
-                //include: [{ model: Categories, attributes: ["name"] }]
+          
+              include: [
+                    {
+                        model: Product,
+                        as: "Products",
+                        through: { attributes: [] },
+                    },
+                ],
+            
             })
             res.status(200).send(categories)
         } catch (error) {
@@ -62,7 +66,7 @@ const CategoryController =  {
             const category = await Category.findByPk(req.params.id)
             res.status(200).send(category)
         } catch (error) {
-            res.status(500).send({ message: 'Ha habido un problema al cargar el producto' })
+            res.status(500).send({ message: 'Ha habido un problema al cargar la categoria' })
         }
     },
      async getOneByName(req, res) {
@@ -73,11 +77,11 @@ const CategoryController =  {
                         [Op.like]: `%${req.params.name}%`
                     }
                 },
-                //include: [Order]
+               
             })
             res.status(200).send(category)
         } catch (error) {
-            res.status(500).send({ message: 'Ha habido un problema al cargar el producto' })
+            res.status(500).send({ message: 'Ha habido un problema al cargar la caegoria' })
         }
     }, 
 };   

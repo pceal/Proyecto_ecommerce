@@ -1,7 +1,6 @@
-//const { INSERT } = require("sequelize/lib/query-types");
+
 const { Product, Category, Order, Sequelize } = require("../models/index.js");
-//const order = require("../models/order.js");
-//const product = require("../models/product.js");
+
 const { Op } = Sequelize
 
 
@@ -11,19 +10,14 @@ const ProductController = {
     
     async insert(req, res, next) {
         try {
-            //req.body.UserId = req.user.id // Añadir el UserId del usuario autenticado
+           
             const product = await Product.create({
                 name: req.body.name,
                 price: req.body.price,
             });
-            //añadir para relaciones (busca id de categorias)
-            // const categories = await Category.findAll({
-            //     where: { id: req.body.CategoryIds },
-            // });
-            //añadir para hacer la relacion
-            // if (categoty.length !== req.body.CategoryIds.length) {
+       
             await product.addCategories(req.body.CategoryIds)
-            // añadir para relaciones Respuesta con el producto y sus categorias
+          
             const productWithCategories = await Product.findByPk(product.id, {
                 include: [
                     {
@@ -67,7 +61,7 @@ const ProductController = {
                     id: req.params.id
                 }
             })
-        res.send('Usuario actualizado con éxito');
+        res.send('producto actualizado con éxito');
     },
     async delete(req, res) {
         await Product.destroy({
@@ -76,7 +70,7 @@ const ProductController = {
             }
         })
         res.send(
-            'el producto ha sido eliminada con éxito'
+            'el producto ha sido eliminado con éxito'
         )
     },
     async getById(req, res) {
@@ -118,57 +112,6 @@ const ProductController = {
         }
     },
 };
-/* const genres = await Genre.findAll({
-          where: { id: req.body.GenreIds },
-        });
-
-        if (genres.length !== req.body.GenreIds.length) {
-          return res.status(404).send({ message: "Some genres not found" });
-        }
-
-        await book.addGenres(req.body.GenreIds); // Método mágico de Sequelize
-      }
-
-      // Respuesta con el libro y sus géneros
-      const bookWithGenres = await Book.findByPk(book.id, {
-        include: [
-          {
-            model: Genre,
-            as: "Genres",
-            through: { attributes: [] }, // Oculta la tabla intermedia
-          },
-        ],
-      });
-
-      res.status(201).send(bookWithGenres);
-    } catch (error) {
-      console.error("Error detallado:", error);
-      res.status(500).send({
-        message: "Error creating book",
-        error: error.message,
-      });
-    }
-  },
-
-  // Obtener todos los libros con sus géneros
-  async getAll(req, res) {
-    try {
-      const books = await Book.findAll({
-        include: [
-          {
-            model: Genre,
-            as: "Genres",
-            through: { attributes: [] }, // Oculta la tabla intermedia
-          },
-        ],
-      });
-      res.send(books);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send({ message: "Error al obtener libros", error });
-    }
-  },
-};*/
 
 
 

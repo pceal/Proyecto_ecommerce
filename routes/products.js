@@ -6,7 +6,7 @@ const { authentication } = require('../middleware/authentication');
 
 router.post('/', ProductController.insert)
 router.get("/", ProductController.getAll)
-//router.put("/:id", ProductController.update)
+router.put("/id/:id",authentication, ProductController.update)
 router.put("/id/:id",authentication, ProductController.update)
 router.delete("/id/:id",authentication, ProductController.delete)
 router.get("/id/:id", ProductController.getById)

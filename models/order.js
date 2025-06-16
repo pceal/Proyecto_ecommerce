@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Order.belongsTo(models.User)
       Order.belongsToMany(models.Product, {
         through: models.OrderProduct, // Usa el modelo, no el nombre como string
-        foreignKey: "OrderId", // FK que apunta desde GenreBook hacia Book
+        foreignKey: "OrderId", // FK que apunta desde OrderProduct hacia Order
         as: "Products", // Debe coincidir con el alias en el include
       });
     }
